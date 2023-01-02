@@ -1,17 +1,52 @@
-import { Container, Heading, Divider, Text } from "@co-design/core";
+import { Container, Heading, Divider, Text, Spinner } from "@co-design/core";
+import { gql, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 
-interface Props {
-  id: string;
-}
+const GET_POST = gql`
+  query GetPost($id: ID!) {
+    post(id: $id) {
+      data {
+        id
+        attributes {
+          title
+          body
+          user {
+            data {
+              attributes {
+                username
+                email
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
-const PostDetail = ({ id }: Props) => {
+const PostDetail = () => {
+  const router = useRouter();
+  const { data, loading, error } = useQuery(GET_POST, {
+    variables: { id: router.query.id },
+  });
   return (
     <Container size={900} co={{ marginTop: 16 }}>
-      <Heading>Title</Heading>
-      <Divider />
-      <Text>Body</Text>
-      <Divider />
-      <Text size="small">cojet | coject.123.123</Text>
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Heading level={3} strong>
+            {data.post.data.attributes.title}
+          </Heading>
+          <Divider />
+          <Text>{data.post.data.attributes.body}</Text>
+          <Divider />
+          <Text size="small">
+            {data.post.data.attributes.user.data.attributes.username} |&nbsp;
+            {data.post.data.attributes.user.data.attributes.email}
+          </Text>
+        </>
+      )}
     </Container>
   );
 };
