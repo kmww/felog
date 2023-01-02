@@ -3,6 +3,7 @@ import { ApolloProvider } from "@apollo/client/react";
 import { CoProvider } from "@co-design/core";
 import { AppShell } from "@co-design/core";
 import type { AppProps } from "next/app";
+import { Header } from "../components";
 
 const client = new ApolloClient({
   uri: "http://localhost:1337/graphql",
@@ -10,7 +11,11 @@ const client = new ApolloClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const header = <AppShell.Header height={70}>Header</AppShell.Header>;
+  const header = (
+    <AppShell.Header height={70}>
+      <Header />
+    </AppShell.Header>
+  );
   return (
     <ApolloProvider client={client}>
       <CoProvider withNormalizeCSS withGlobalStyles>
