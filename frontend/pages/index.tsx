@@ -35,7 +35,7 @@ const GET_POSTS = gql`
 const Home = () => {
   const { data, loading, error } = useQuery(GET_POSTS);
   return (
-    <Container padding={16}>
+    <Container padding={16} co={{ marginTop: 16 }}>
       {loading ? (
         <Center>
           <Spinner />
