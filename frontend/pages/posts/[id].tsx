@@ -30,7 +30,7 @@ const PostDetail = () => {
     variables: { id: router.query.id },
   });
   return (
-    <Container size={900} co={{ marginTop: 16 }}>
+    <Container size={900} padding={16} co={{ marginTop: 16 }}>
       {loading ? (
         <Spinner />
       ) : (

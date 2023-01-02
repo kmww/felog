@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import NextLink from "next/link";
 import {
   Card,
   Heading,
@@ -8,6 +9,7 @@ import {
   Spinner,
   Center,
   Container,
+  Anchor,
 } from "@co-design/core";
 
 const GET_POSTS = gql`
@@ -44,7 +46,15 @@ const Home = () => {
         <EquallyGrid cols={4}>
           {data.posts.data.map((post: any) => (
             <Card key={post.id}>
-              <Heading level={4}>{post.attributes.title}</Heading>
+              <NextLink
+                style={{ textDecoration: "none" }}
+                href="/posts/[id]"
+                as={`posts/${post.id}`}
+              >
+                <Anchor co={{ color: "black" }}>
+                  <Heading level={4}>{post.attributes.title}</Heading>
+                </Anchor>
+              </NextLink>
               <Text lineClamp={3}>{post.attributes.body}</Text>
               <Divider />
               <Text block align="right">
