@@ -9,7 +9,6 @@ import {
   Spinner,
   Center,
   Container,
-  Anchor,
 } from "@co-design/core";
 
 const GET_POSTS = gql`
