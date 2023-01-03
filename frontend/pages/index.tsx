@@ -47,13 +47,11 @@ const Home = () => {
           {data.posts.data.map((post: any) => (
             <Card key={post.id}>
               <NextLink
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: "none", color: "black" }}
                 href="/posts/[id]"
                 as={`posts/${post.id}`}
               >
-                <Anchor co={{ color: "black" }}>
-                  <Heading level={4}>{post.attributes.title}</Heading>
-                </Anchor>
+                <Heading level={4}>{post.attributes.title}</Heading>
               </NextLink>
               <Text lineClamp={3}>{post.attributes.body}</Text>
               <Divider />
