@@ -5,7 +5,7 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { CoProvider, AppShell } from "@co-design/core";
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import { Header } from "../components";
 import { setContext } from "@apollo/client/link/context";
 import nookies from "nookies";
@@ -20,7 +20,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: token ? `Bearer ${token}` : "",
+      Authorization: token ? `Bearer ${token}` : undefined,
     },
   };
 });
@@ -33,7 +33,7 @@ const client = new ApolloClient({
 export default function App({ Component, pageProps }: AppProps) {
   const header = (
     <AppShell.Header height={70}>
-      <Header />
+      <Header token={pageProps.token} />
     </AppShell.Header>
   );
   return (
@@ -46,3 +46,8 @@ export default function App({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   );
 }
+
+App.getInitialProps = async (appCtx: AppContext) => {
+  const { token } = nookies.get(appCtx.ctx);
+  return { pageProps: { token } };
+};
