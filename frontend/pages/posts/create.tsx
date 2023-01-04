@@ -10,6 +10,7 @@ import {
 import { useToggle } from "@co-design/hooks";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
+import { GET_POSTS } from "..";
 
 interface FormElements extends HTMLFormElement {
   titleInput: HTMLInputElement;
@@ -28,7 +29,9 @@ const CREATE_POST = gql`
 
 const PostCreate = () => {
   const [loading, toggleLoading] = useToggle();
-  const [createPost] = useMutation(CREATE_POST);
+  const [createPost] = useMutation(CREATE_POST, {
+    refetchQueries: [{ query: GET_POSTS }],
+  });
   const router = useRouter();
 
   const handleSubmit = useCallback(
@@ -39,7 +42,9 @@ const PostCreate = () => {
       const elements: FormElements = e.currentTarget;
       const title = elements.titleInput.value;
       const body = elements.body.value;
-      await createPost({ variables: { title, body } });
+      await createPost({
+        variables: { title, body },
+      });
       toggleLoading(false);
       router.push("/");
     },

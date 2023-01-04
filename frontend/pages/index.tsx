@@ -15,7 +15,7 @@ import {
 } from "@co-design/core";
 import { NextLinkComposed } from "../components";
 
-const GET_POSTS = gql`
+export const GET_POSTS = gql`
   query GetPost {
     posts(sort: ["createdAt:desc"]) {
       data {
