@@ -10,9 +10,10 @@ import {
 } from "@co-design/core";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { User } from "../../interfaces";
+import { User } from "../../../interfaces";
 import { useCallback } from "react";
-import { GET_POSTS } from "..";
+import { GET_POSTS } from "../..";
+import { NextLinkComposed } from "../../../components";
 
 const GET_POST = gql`
   query GetPost($id: ID!) {
@@ -78,7 +79,13 @@ const PostDetail = ({ me }: Props) => {
               <Button color="red" onClick={handleDelete}>
                 삭제
               </Button>
-              <Button>수정</Button>
+              <Button
+                component={NextLinkComposed}
+                href="/posts/[id]/edit"
+                as={`/posts/${router.query.id}/edit`}
+              >
+                수정
+              </Button>
             </Group>
           )}
           <Heading level={3} strong>
