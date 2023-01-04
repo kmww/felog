@@ -17,7 +17,7 @@ import { NextLinkComposed } from "../components";
 
 const GET_POSTS = gql`
   query GetPost {
-    posts {
+    posts(sort: ["createdAt:desc"]) {
       data {
         id
         attributes {
