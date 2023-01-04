@@ -1,6 +1,16 @@
-import { Container, Heading, Divider, Text, Spinner } from "@co-design/core";
+import {
+  Container,
+  Heading,
+  Divider,
+  Text,
+  Spinner,
+  Stack,
+  Group,
+  Button,
+} from "@co-design/core";
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
+import { User } from "../../interfaces";
 
 const GET_POST = gql`
   query GetPost($id: ID!) {
@@ -12,6 +22,7 @@ const GET_POST = gql`
           body
           user {
             data {
+              id
               attributes {
                 username
                 email
@@ -24,7 +35,11 @@ const GET_POST = gql`
   }
 `;
 
-const PostDetail = () => {
+interface Props {
+  me?: User;
+}
+
+const PostDetail = ({ me }: Props) => {
   const router = useRouter();
   const { data, loading, error } = useQuery(GET_POST, {
     variables: { id: router.query.id },
@@ -34,7 +49,13 @@ const PostDetail = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <>
+        <Stack>
+          {me?.id === data.post.data.attributes.user.data.id && (
+            <Group spacing={8} position="right">
+              <Button color="red">삭제</Button>
+              <Button>수정</Button>
+            </Group>
+          )}
           <Heading level={3} strong>
             {data.post.data.attributes.title}
           </Heading>
@@ -45,7 +66,7 @@ const PostDetail = () => {
             {data.post.data.attributes.user.data.attributes.username} |&nbsp;
             {data.post.data.attributes.user.data.attributes.email}
           </Text>
-        </>
+        </Stack>
       )}
     </Container>
   );
